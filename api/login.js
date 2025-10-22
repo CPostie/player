@@ -1,24 +1,31 @@
 import { XTREAM_BASE } from "./config.js";
 
 export default async function handler(req) {
-  if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
+  if (req.method !== "POST")
+    return new Response("Method Not Allowed", { status: 405 });
 
   const { username, password } = await req.json();
-  if (!username || !password)
-    return new Response(JSON.stringify({ error: "Missing credentials" }), { status: 400 });
+  const url = `${XTREAM_BASE}/player_api.php?username=${encodeURIComponent(
+    username
+  )}&password=${encodeURIComponent(password)}`;
 
-  const url = `${XTREAM_BASE}/player_api.php?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
-  const r = await fetch(url);
-  const data = await r.json();
+  try {
+    const res = await fetch(url);
+    const text = await res.text();
 
-  if (!data?.user_info || data.user_info.auth === 0)
-    return new Response(JSON.stringify({ error: "Invalid line" }), { status: 401 });
+    console.log("DEBUG XTREAM RESPONSE (first 400 chars):", text.slice(0, 400));
 
-  return new Response(JSON.stringify({
-    user_info: {
-      username: data.user_info.username,
-      exp_date: data.user_info.exp_date,
-      status: data.user_info.status
-    }
-  }), { headers: { "Content-Type": "application/json" }});
+    return new Response(
+      JSON.stringify({
+        debug: text.slice(0, 400),
+        status: res.status,
+      }),
+      { headers: { "Content-Type": "application/json" } }
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ error: err.message }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
 }
