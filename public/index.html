@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Xtream Web Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Xtream Web Player</div>
+    <div id="lineMeta" class="meta"></div>
+  </header>
+
+  <main class="container">
+    <section id="loginCard" class="card">
+      <h2>Login</h2>
+      <p class="muted">Enter your Xtream credentials. Server is preconfigured.</p>
+      <label>Username</label>
+      <input id="username" placeholder="your username" />
+      <label>Password</label>
+      <input id="password" type="password" placeholder="your password" />
+      <button id="loginBtn">Login</button>
+      <div id="loginError" class="error"></div>
+    </section>
+
+    <section id="home" class="hidden">
+      <div class="home-actions">
+        <button class="pill" data-tab="live">Live TV</button>
+        <button class="pill" data-tab="series">Series</button>
+        <button class="pill" data-tab="movies">Movies</button>
+      </div>
+      <div class="search-row">
+        <input id="masterSearch" placeholder="Search everything..." />
+        <button id="masterSearchBtn">Search</button>
+      </div>
+      <div id="masterResults" class="grid"></div>
+    </section>
+
+    <section id="tabs" class="hidden">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="live">Live TV</button>
+        <button class="tab-btn" data-tab="series">Series</button>
+        <button class="tab-btn" data-tab="movies">Movies</button>
+      </div>
+      <div id="tab-live" class="tab active">
+        <div class="search-row">
+          <input id="liveSearch" placeholder="Search channels..." />
+        </div>
+        <div id="liveCats" class="chip-row"></div>
+        <div id="liveList" class="grid"></div>
+      </div>
+      <div id="tab-series" class="tab">
+        <div class="search-row">
+          <input id="seriesSearch" placeholder="Search series..." />
+        </div>
+        <div id="seriesCats" class="chip-row"></div>
+        <div id="seriesList" class="grid"></div>
+        <div id="seriesInfo" class="drawer hidden"></div>
+      </div>
+      <div id="tab-movies" class="tab">
+        <div class="search-row">
+          <input id="vodSearch" placeholder="Search movies..." />
+        </div>
+        <div id="vodCats" class="chip-row"></div>
+        <div id="vodList" class="grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="playerModal" class="modal hidden">
+    <div class="modal-content">
+      <button id="closePlayer" class="close">&times;</button>
+      <video id="video" controls playsinline></video>
+    </div>
+  </div>
+
+  <script src="/hls.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
